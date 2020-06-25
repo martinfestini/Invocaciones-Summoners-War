@@ -23,8 +23,10 @@ leg=""
 legPieces=""
 tras=""
 ifrits=""
+mss=0
 
 def menu():
+        
 	print("Este programa esta pensado para facilitar el cálculo de probabilidades al momento de invocar.")
 	print("La lista de códigos es:")
 	print("1 = Cargar datos.")
@@ -49,7 +51,8 @@ def menu():
 	elif codigo == 3:
 		no5nats()
 	elif codigo == 4:
-		n5nats()
+		n=int(input("Que cantidad de 5nats?"))
+		calcularCantidadFija(n)
 	elif codigo == 5:
 		alMenosN()
 	elif codigo == 6:
@@ -76,7 +79,21 @@ def cargarDatos():
 	global legPieces
 	global tras
 	global ifrits
+	global mss
 
+	ms=""
+	fires=""
+	winds=""
+	waters=""
+	piedritas=""
+	lyds=""
+	lydpieces=""
+	leg=""
+	legpieces=""
+	tras=""
+	ifrits=""
+	mss=0
+	
 	while ms =="":
 	        ms = (input("¿Cuantos pergaminos misticos va a invocar?"))                              #MISTICALS
 	ms = int(ms)
@@ -92,13 +109,15 @@ def cargarDatos():
 	while waters=="":
 		waters = (input("¿Cuantos pergaminos de agua va a invocar?"))                          #AGUAS
 	waters = int(waters)
-
+        
 	while piedritas=="":
 		piedritas = (input("¿Cuantas piedritas va a invocar"))                                 #PIEDRITAS
 	piedritas = int(piedritas)
 
 	restoPiedritas = piedritas%50
 	piedritas = piedritas//50
+
+	mss=(ms+winds+waters+fires+piedritas)
 
 	rotacion = []
 
@@ -144,8 +163,8 @@ def cargarDatos():
 
 def no5nats():
 	chance = calcularCantidadFija(0)
+	print("la chance es ",chance)
 	return chance
-	print(chance)
 	menu()
 
 def manaTotal():
@@ -157,9 +176,39 @@ def alMenosN():
         n=int(input("¿La chance de al menos cuantos 5 nats quiere calcular?"))
         chance=1
         for x in range(n-1):
-                a=calcularCantidadFija(x)
-                chance=chance-a
-        print(chance)
+            z=calcularCantidadFija(x)
+            print(z)
+            chance=chance-z
+            print(chance)
+        print("la chance es",chance)
+
+def calcularCantidadFija(n):
+    a1=0
+    a2=1
+    b1=0
+    b2=1
+    c1=0
+    c2=1
+    if n==0:
+        a2=noNat5ms**mss
+        b2=noNat5Lyd**lyds
+        c2=nat4leg**leg
+        chance=a2*b2*c2
+        return(chance)
+        print("la chance es",chance)
+    if mss>0:
+        a1=(factorial(mss))/(factorial(mss-n)*factorial(n))*(nat5ms**n)*(noNat5ms**(mss-n))
+        a2=noNat5ms**mss
+    if lyds>0:
+        b1=(factorial(lyds))/(factorial(lyds-n)*factorial(n))*(nat5Lyd**n)*(noNat5Lyd**(lyds-n))
+        b2=noNat5Lyd**lyds
+    if leg>0:
+        c1=(factorial(leg))/(factorial(leg-n)*factorial(n))*(nat5leg**n)*(nat4leg**(leg-n))
+        c2=nat4leg**leg
+    
+    chance=(a1*b2*c2)+(a2*b1*c2)+(a2*b2*c1)
+    print("la chance es ",chance)
+    return chance
 
 
 #x= cantidad de exitos
@@ -169,14 +218,8 @@ def alMenosN():
  
 #P(x)= (n!/(x!(n-x)!))*p^x*q^(n-x)
 
-def calcularCantidadFija(n):
-        chancems=((factorial((ms+winds+fires+waters+piedritas)))/(factorial(n)*factorial((ms+winds+fires+waters+piedritas)-n)))*(nat5ms**n)*(noNat5ms**((ms+waters+winds+fires+piedritas)-n))
-        chancelyd=((factorial(lyds)/(factorial(n)*factorial(lyds-n)))*(nat5Lyd**n)*(noNat5Lyd**(lyds-n)))
-        chanceleg=((factorial(leg)/(factorial(n)*factorial(leg-n)))*(nat5leg**n)*(nat4leg**(leg-n)))
-        chance=1-(chancems+chancelyd+chanceleg)
-        return chance
-
 menucontador = 0
 
 while menucontador==0:
         menu()
+
