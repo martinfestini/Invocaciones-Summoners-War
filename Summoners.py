@@ -1,4 +1,5 @@
 import sys, random
+from math import factorial
 
 #Constantes:
 
@@ -138,12 +139,11 @@ def cargarDatos():
 	
 	print(ms,fires,winds,waters,piedritas,lyds,leg,tras,ifrits,rotacion)
 
-	menu()
 	
 ################## ACA TERMINA CargarDatos ####################################################
 
 def no5nats():
-	chance = (noNat5ms**(ms+fires+winds+waters+piedritas))*(noNat5Lyd**(lyds))*(nat4leg**leg)
+	chance = calcularCantidadFija(0)
 	return chance
 	print(chance)
 	menu()
@@ -155,7 +155,12 @@ def manaTotal():
 
 def alMenosN():
         n=int(input("¿La chance de al menos cuantos 5 nats quiere calcular?"))
-        chance = calcularAlmenos(n)
+        chance=1
+        for x in range(n-1):
+                a=calcularCantidadFija(x)
+                chance=chance-a
+        print(chance)
+
 
 #x= cantidad de exitos
 #n= numero de intentos
@@ -164,10 +169,14 @@ def alMenosN():
  
 #P(x)= (n!/(x!(n-x)!))*p^x*q^(n-x)
 
-def calcularCantidadFija:
+def calcularCantidadFija(n):
+        chancems=((factorial((ms+winds+fires+waters+piedritas)))/(factorial(n)*factorial((ms+winds+fires+waters+piedritas)-n)))*(nat5ms**n)*(noNat5ms**((ms+waters+winds+fires+piedritas)-n))
+        chancelyd=((factorial(lyds)/(factorial(n)*factorial(lyds-n)))*(nat5Lyd**n)*(noNat5Lyd**(lyds-n)))
+        chanceleg=((factorial(leg)/(factorial(n)*factorial(leg-n)))*(nat5leg**n)*(nat4leg**(leg-n)))
+        chance=1-(chancems+chancelyd+chanceleg)
+        return chance
 
 menucontador = 0
 
 while menucontador==0:
         menu()
-
